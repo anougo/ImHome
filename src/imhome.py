@@ -1,12 +1,19 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 import os
+from typing import Tuple
 import configparser
 import pyshark
 
-def import_config():
-    """設定ファイルの読み込み
+def import_config() -> Tuple[list, list, str]:
+    """設定ファイルの読み込みと検証
+
+    検証時に異常がある場合、`False`を返す
+
     Returns:
-        tuple: mac_addres(list), interface(string)
+        tuple: 
+            list: mac_addres list, 
+            list: device name list
+            str: interface name
     """
     # 設定ファイルの読み込み
     config_ini = configparser.ConfigParser()
@@ -38,7 +45,7 @@ def import_config():
     # interface
     interface = read_default.get("interface")
     if interface is None:
-        interface = "eth0"
+        interface = "eth0" # 未設定の場合のデフォルト値
     
     if os.name == "nt" and interface == "eth0":
         # windows
@@ -50,7 +57,7 @@ def import_config():
     return (mac_addrs, names, interface)
 
 def main():
-    """初期化と設定の読み込み、パケットキャプチャを開始
+    """設定を読み込み、パケットキャプチャを開始
     """
     config = import_config()
     if config == False:
