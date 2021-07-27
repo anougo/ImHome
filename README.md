@@ -3,8 +3,9 @@ Detect and notify the connection of a specific device to Wifi.
 
 ## TODO
 - echo dotへの通知  
- [`alexa-remote-control`](https://github.com/thorsten-gehrig/alexa-remote-control)を使う予定
-- rasberry piでの動作確認
+  [`alexa-remote-control`](https://github.com/thorsten-gehrig/alexa-remote-control)を使う予定
+- rasberry piでの動作確認  
+  8月以降予定
 
 ## Windows上での動作環境
 [`alexa-remote-control`](https://github.com/thorsten-gehrig/alexa-remote-control)は、WSL等で動かす必要がある
