@@ -24,4 +24,15 @@ Detect and notify the connection of a specific device to Wifi.
 
 ## Install
 1. git clone
-1. pip install pyshark
+1. pip install -r requiremtns.txt
+
+
+
+## Ubuntu
+sudo apt install -y tshark
+sudo dpkg-reconfigure wireshark-common
+     enter yes
+sudo chmod +x /usr/bin/dumpcap
+
+
+https://askubuntu.com/questions/748941/im-not-able-to-use-wireshark-couldnt-run-usr-bin-dumpcap-in-child-process
