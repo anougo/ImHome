@@ -1,12 +1,15 @@
 {
-    "interface": "eth0",
-    "detection_rule": [
-        {}
-    ],
+    "interface": "",
+    "arc_path": "../alexa_remote_control.sh",
     "device_list": [
         {
             "mac_addr": "",
-            "name": ""
+            "name": "",
+            "message": {
+                "notify": true,
+                "message": "",
+                "echo_dot_name": ""
+            }
         }
     ]
 }

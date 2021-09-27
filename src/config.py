@@ -7,23 +7,19 @@ def importConfig():
     Returns:
         tuple:
             str: interface,
-            list: detection rule
+            str: alexa_remote_control.sh path
             list: device list
     """
 
-    with open("config.json", "r") as f:
+    with open("config.json", "r", encoding="utf-8") as f:
         config = json.load(f)
 
     interface = config["interface"]
     if not interface:
         return False
 
-    detectRule = config["detection_rule"]
-    if not detectRule:
-        return False
+    arc_path = config["arc_path"]
 
     devices = config["device_list"]
 
-    # TODO データの検証
-
-    return (interface, detectRule, devices)
+    return (interface, arc_path, devices)

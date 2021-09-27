@@ -2,6 +2,7 @@
 from typing import Tuple
 from config import importConfig
 import pyshark
+import subprocess
 
 
 def main():
@@ -12,23 +13,26 @@ def main():
         return
 
     interface = config[0]
-    # detect_rule = config[1]
+    arc_path = config[1]
     devices = config[2]
 
     device_dic = {}
     for d in devices:
-        device_dic[d["mac_addr"]] = d["name"]
+        if not d["message"]["notify"]:
+            continue
+        device_dic[d["mac_addr"]] = d
 
     print("start packet capture")
     while True:
 
         def take_packet_callback(packet):
             if packet.arp.src_hw_mac in device_dic:
-                print("============= Received ================")
-                print(packet)
-                # TODO 複数回同一同じ内容が送信されているので対応の検討が必要
-                # TODO 通知先の呼び出し
-            # print(packet.arp.field_names) # フィールドの一覧を取得
+                device = device_dic[packet.arp.src_hw_mac]
+                cmd = f'{arc_path} -d "{device["message"]["echo_dot_name"]}" -e "{device["message"]["message"]}" '
+                proc = subprocess.Popen(cmd)
+                result = proc.communicate()
+                print(result[0])
+                print(result[1])
 
         capture = pyshark.LiveCapture(interface=interface, display_filter="arp.opcode==1&&arp.src.proto_ipv4==0.0.0.0")
         capture.apply_on_packets(take_packet_callback)  # キャプチャを実行
