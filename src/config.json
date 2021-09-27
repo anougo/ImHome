@@ -1,0 +1,12 @@
+{
+    "interface": "eth0",
+    "detection_rule": [
+        {}
+    ],
+    "device_list": [
+        {
+            "mac_addr": "",
+            "name": ""
+        }
+    ]
+}

@@ -1,83 +1,38 @@
 # -*- coding: utf-8 -*-
-import os
 from typing import Tuple
-import configparser
+from config import importConfig
 import pyshark
 
-def import_config() -> Tuple[list, list, str]:
-    """設定ファイルの読み込みと検証
-
-    検証時に異常がある場合、`False`を返す
-
-    Returns:
-        tuple: 
-            list: mac_addres list, 
-            list: device name list
-            str: interface name
-    """
-    # 設定ファイルの読み込み
-    config_ini = configparser.ConfigParser()
-    config_ini.read("config.ini", encoding="utf-8")
-    read_default = config_ini["DEFAULT"]
-
-    # mac_addrs
-    mac_addrs = read_default.get("mac_addrs")
-    if mac_addrs is None:
-        print("config.ini: mac_addrs is None.")
-        return False
-
-    if "," in mac_addrs:
-        mac_addrs = mac_addrs.split(",")
-    else:
-        mac_addrs = [mac_addrs]
-    
-    # names
-    names = read_default.get("names")
-    if names is None:
-        print("config.ini: names is None.")
-        return False
-
-    if "," in names:
-        names = names.split(",")
-    else:
-        names = [names]
-
-    # interface
-    interface = read_default.get("interface")
-    if interface is None:
-        interface = "eth0" # 未設定の場合のデフォルト値
-    
-    if os.name == "nt" and interface == "eth0":
-        # windows
-        print("config.ini: interface is required")
-        return False
-
-    # TODO 指定されたNICが存在するかの判定
-
-    return (mac_addrs, names, interface)
 
 def main():
-    """設定を読み込み、パケットキャプチャを開始
-    """
-    config = import_config()
-    if config == False:
-        print("invalid config.ini.")
+    """設定を読み込み、パケットキャプチャを開始"""
+    config = importConfig()
+    if not config:
+        print("invalid config.json.")
         return
-    mac_addrs = config[0]
-    names = config[1]
-    interface = config[2]
 
+    interface = config[0]
+    # detect_rule = config[1]
+    devices = config[2]
+
+    device_dic = {}
+    for d in devices:
+        device_dic[d["mac_addr"]] = d["name"]
+
+    print("start packet capture")
     while True:
+
         def take_packet_callback(packet):
-            if packet.arp.src_hw_mac in mac_addrs:
+            if packet.arp.src_hw_mac in device_dic:
+                print("============= Received ================")
                 print(packet)
                 # TODO 複数回同一同じ内容が送信されているので対応の検討が必要
                 # TODO 通知先の呼び出し
-            #print(packet.arp.field_names) # フィールドの一覧を取得
+            # print(packet.arp.field_names) # フィールドの一覧を取得
 
-        capture = pyshark.LiveCapture(interface=interface, display_filter="arp.opcode==1")
-        capture.apply_on_packets(take_packet_callback) # キャプチャを実行
+        capture = pyshark.LiveCapture(interface=interface, display_filter="arp.opcode==1&&arp.src.proto_ipv4==0.0.0.0")
+        capture.apply_on_packets(take_packet_callback)  # キャプチャを実行
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

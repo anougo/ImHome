@@ -24,4 +24,7 @@ Detect and notify the connection of a specific device to Wifi.
 
 ## Install
 1. git clone
-1. pip install pyshark
+1. pip install -r requirements.txt.
+1. git clone `alexa-remote-control`
+1. `alexa-remote-control` setting
+1. imhome setting
