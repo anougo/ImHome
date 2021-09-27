@@ -1,0 +1,15 @@
+{
+    "interface": "",
+    "arc_path": "../alexa_remote_control.sh",
+    "device_list": [
+        {
+            "mac_addr": "",
+            "name": "",
+            "message": {
+                "notify": true,
+                "message": "",
+                "echo_dot_name": ""
+            }
+        }
+    ]
+}
