@@ -23,8 +23,11 @@ Detect and notify the connection of a specific device to Wifi.
 
 
 ## Install
+1. sudo apt-get intall tshark
+1. sudo chmod +x /usr/bin/dumpcap
+1. sudo apt-get intall pyshark
 1. git clone
-1. pip install -r requirements.txt.
+1. pip install -r requiremtns.txt
 1. git clone `alexa-remote-control`
 1. `alexa-remote-control` setting
 1. imhome setting
