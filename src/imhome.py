@@ -2,7 +2,9 @@
 from config import importConfig
 import pyshark
 import subprocess
-from logging import getLogger, log
+from logging import getLogger, config
+
+config.fileConfig("log_config.json")
 
 logger = getLogger(__name__)
 
@@ -24,7 +26,7 @@ def main():
             continue
         device_dic[d["mac_addr"]] = d
 
-    print("start packet capture")
+    logger.info("start packet capture")
     while True:
 
         def take_packet_callback(packet):
