@@ -1,33 +1,39 @@
 # ImHome
-Detect and notify the connection of a specific device to Wifi.
+## 概要
+デバイスからWifiへの接続を検出し、Alexaを喋らせる
+キッズケータイ(SH-03M)は、Wifiを検出するが接続しないため通知されないかも
 
-## TODO
-- echo dotへの通知  
-  [`alexa-remote-control`](https://github.com/thorsten-gehrig/alexa-remote-control)を使う予定
-- rasberry piでの動作確認  
-  8月以降予定
-
-## Windows上での動作環境
-[`alexa-remote-control`](https://github.com/thorsten-gehrig/alexa-remote-control)は、WSL等で動かす必要がある
-1. Wiresharkのインストール
-1. IFの名前取得  
-  Wiresharkのインストールディレクトリ`C:\Program Files\Wireshark`へ移動
-  下記のコマンドを実行する
-    ```cmd
-    rem 文字化けするので文字コードを変更
-    chcp 65001
-    dumpcap -D
-    ```
-    キャプチャ対象のIFの名前`\Device\NPF_{xxxxx}`を控えておく  
-    [参考にしたURL](https://one.angato.org/studyenv/wireshark/)
-
+## Alexa
+[alexa-remote-control](https://github.com/thorsten-gehrig/alexa-remote-control)を使用する
 
 ## Install
 1. sudo apt-get intall tshark
 1. sudo chmod +x /usr/bin/dumpcap
 1. sudo apt-get intall pyshark
-1. git clone
+1. git clone https://github.com/anougo/ImHome.git
 1. pip install -r requiremtns.txt
-1. git clone `alexa-remote-control`
+1. git clone https://github.com/thorsten-gehrig/alexa-remote-control.git
 1. `alexa-remote-control` setting
 1. imhome setting
+
+## 設定
+`src/config.json`を設定する
+- `interface`  
+  パケットを監視するインターフェースの名前  
+  `eth0`など
+- `arc_path`
+  `alexa-remote-control.sh`のパス
+- `device_list`
+  - `mac_addr`  
+    監視するデバイスのmacアドレス
+  - `name`  
+    デバイスの名前(特に使用していない)
+  - `message`
+    - `notify`  
+      `true` or `false`  
+      `true`の場合通知対象となる
+    - `message`  
+      alexaの喋る内容
+    - `echo_dot_name`  
+      喋るEchoデバイスの名前
+
