@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from typing import Tuple
 from config import importConfig
 import pyshark
 import subprocess
+from logging import getLogger, log
+
+logger = getLogger(__name__)
 
 
 def main():
@@ -26,15 +28,20 @@ def main():
     while True:
 
         def take_packet_callback(packet):
+            logger.debug("capture")
+            logger.debug(packet)
             if packet.arp.src_hw_mac in device_dic:
+                logger.debug("filterd")
+                logger.debug(packet)
                 device = device_dic[packet.arp.src_hw_mac]
                 cmd = f'{arc_path} -d "{device["message"]["echo_dot_name"]}" -e "{device["message"]["message"]}" '
+                logger.info(f"cmd: {cmd}")
                 proc = subprocess.Popen(cmd)
                 result = proc.communicate()
-                print(result[0])
-                print(result[1])
+                logger.info(result)
 
-        capture = pyshark.LiveCapture(interface=interface, display_filter="arp.opcode==1&&arp.src.proto_ipv4==0.0.0.0")
+        # arp.opcode==1&&arp.src.proto_ipv4==0.0.0.0
+        capture = pyshark.LiveCapture(interface=interface, display_filter="arp.opcode==1")
         capture.apply_on_packets(take_packet_callback)  # キャプチャを実行
 
 
