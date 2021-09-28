@@ -18,7 +18,7 @@
             "class": "logging.handlers.TimedRotatingFileHandler",
             "level": "DEBUG",
             "formatter": "simple",
-            "filename": "imhome.log",
+            "filename": "log/imhome.log",
             "when": "MIDNIGHT",
             "backupCount": 7
         }
