@@ -1,6 +1,6 @@
 # ImHome
 ## 概要
-デバイスからWifiへの接続を検出し、Alexaを喋らせる
+デバイスからWifiへの接続を検出し、Alexaを喋らせる  
 キッズケータイ(SH-03M)は、Wifiを検出するが接続しないため通知されないかも
 
 ## Alexa
@@ -21,7 +21,7 @@
 - `interface`  
   パケットを監視するインターフェースの名前  
   `eth0`など
-- `arc_path`
+- `arc_path`  
   `alexa-remote-control.sh`のパス
 - `device_list`
   - `mac_addr`  
