@@ -3,22 +3,27 @@ from config import importConfig
 import pyshark
 import subprocess
 from logging import getLogger, config
-
-config.fileConfig("log_config.json")
+import json
 
 logger = getLogger(__name__)
 
 
 def main():
     """設定を読み込み、パケットキャプチャを開始"""
-    config = importConfig()
-    if not config:
+    with open("./log_config.json", "r") as f:
+        log_conf = json.load(f)
+
+    # log config
+    config.dictConfig(log_conf)
+
+    conf = importConfig()
+    if not conf:
         print("invalid config.json.")
         return
 
-    interface = config[0]
-    arc_path = config[1]
-    devices = config[2]
+    interface = conf[0]
+    arc_path = conf[1]
+    devices = conf[2]
 
     device_dic = {}
     for d in devices:
